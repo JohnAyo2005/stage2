@@ -5,7 +5,7 @@ app = Flask(__name__)
 CORS(app, resources={r"*": {"origins": "*"}})
 
 
-@app.route('/user_info/', methods=['POST'])
+@app.route('/stage2/', methods=['POST'])
 def operation():
     if request.method == 'POST':
         operation = request.json["operation_type"]
