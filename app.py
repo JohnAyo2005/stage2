@@ -1,43 +1,38 @@
-from flask import Flask, request, json, Response
+from flask import Flask, request,  jsonify
 from flask_cors import CORS
 
+#configure the app
 app = Flask(__name__)
-CORS(app, resources={r"*": {"origins": "*"}})
+
+CORS(app)
 
 
-@app.route('/stage2/', methods=['POST'])
-def operation():
-    if request.method == 'POST':
-        operation = request.json["operation_type"]
-        x = request.json['x']
-        y = request.json['y']
-        slackUsername = 'Johnny2005'
+@app.route('/')
+def home():
+    return "Computation"
 
-        if operation == 'addition':
-            sum = x + y
-            data = { "slackUsername": slackUsername, "result": sum, "operation_type" : operation }
 
-            response = json.dumps(data, sort_keys=False)
-            return Response(response, mimetype='application/json')
-
-        elif operation == 'subtraction':
-            minus = x - y
-            data = { "slackUsername": slackUsername, "result": minus, "operation_type" : operation }
-
-            response = json.dumps(data, sort_keys=False)
-            return Response(response, mimetype='application/json')
-
-        elif operation == 'multiplication':
-            times = x * y
-            data = { "slackUsername": slackUsername, "result": times, "operation_type" : operation }
-
-            response = json.dumps(data, sort_keys=False)
-            return Response(response, mimetype='application/json')
-        else:
-            return {"response": "Operation must be either addition, multiplication or Subtration"}
+@app.route('/api/compute', methods= ['POST'])
+def post_computation():
+      # Unpacking the data posted to the API
     
-    return "error processing reqeust :("
-
-
+    operation_type= request.json['operation_type']
+    x =int(request.json['x'])
+    y = int(request.json['y'])
+      
+    result =0
+    if operation_type == "minus" or operation_type == "subtract" or operation_type == "subtraction":
+        result = x - y
+    if operation_type == "add" or operation_type == "addition" or operation_type == "plus":
+        result = x + y
+    if operation_type == "multiply" or operation_type == "multiplication":
+        result = x * y
+    return jsonify({
+            'slackUsername': 'oluwasube',
+            'result': result,
+            'operation_type': operation_type
+        })
+    
 if __name__ == '__main__':
-    app.run(debug=True
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
