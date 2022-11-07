@@ -28,7 +28,7 @@ def post_computation():
     if operation_type == "multiply" or operation_type == "multiplication":
         result = x * y
     return jsonify({
-            'slackUsername': 'oluwasube',
+            'slackUsername': 'Johnny2005',
             'result': result,
             'operation_type': operation_type
         })
